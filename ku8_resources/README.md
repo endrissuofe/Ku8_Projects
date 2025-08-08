@@ -1,4 +1,3 @@
-````markdown
 # Working with Kubernetes Resources
 
 This hands-on project demonstrates how to deploy and expose an Nginx web application on Minikube using Kubernetes YAML configuration files.
@@ -9,8 +8,6 @@ This hands-on project demonstrates how to deploy and expose an Nginx web applica
 
 A **Kubernetes YAML file** is a text file written in YAML syntax that describes and defines Kubernetes resources such as Pods, Containers, Services, and Deployments.  
 YAML uses indentation to represent hierarchy and spaces (not tabs) for indentation. In Kubernetes, YAML provides a declarative way to specify the desired state of resources.
-
-![github](img/yaml-introduction.png)
 
 ---
 
@@ -25,8 +22,6 @@ YAML uses indentation to represent hierarchy and spaces (not tabs) for indentati
 - **Multiline Strings**: Represented with `|` or `>`.
 - **Anchors & Aliases**: `&` to create an anchor, `*` to use it.
 
-![github](img/yaml-structure.png)
-
 ---
 
 ## 3. Deploying Applications in Kubernetes
@@ -39,8 +34,6 @@ Types of Services:
 - **NodePort** – Accessible externally on a static port.
 - **LoadBalancer** – Uses cloud provider load balancer for external access.
 
-![github](img/kubernetes-services.png)
-
 ---
 
 ## 4. Start Minikube
@@ -49,7 +42,7 @@ Types of Services:
 minikube start
 ````
 
-![github](img/start-minikube.png)
+![Minikube-start](img/start-minikube.png)
 
 ---
 
@@ -60,62 +53,23 @@ mkdir my-nginx-yaml
 cd my-nginx-yaml
 ```
 
-![github](img/create-folder.png)
+![folder](img/create-folder.png)
 
 ---
 
 ## 6. Create Deployment YAML
 
-**File:** `nginx-deployment.yaml`
+see **File:** `nginx-deployment.yaml` artifact
 
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: my-nginx-deployment
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: my-nginx
-  template:
-    metadata:
-      labels:
-        app: my-nginx
-    spec:
-      containers:
-        - name: my-nginx
-          image: <your-dockerhub-username>/my-nginx:1.0
-          ports:
-            - containerPort: 80
-```
-
-> Replace `<your-dockerhub-username>` with your Docker Hub username.
-
-![github](img/create-deployment-yaml.png)
+![deployment](img/create-deployment-yaml.png)
 
 ---
 
 ## 7. Create Service YAML
 
-**File:** `nginx-service.yaml`
+see **File:** `nginx-service.yaml` artifact
 
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: my-nginx-service
-spec:
-  selector:
-    app: my-nginx
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-  type: NodePort
-```
-
-![github](img/create-service-yaml.png)
+![Service](img/create-service-yaml.png)
 
 ---
 
@@ -166,15 +120,12 @@ This opens the Nginx welcome page in a browser.
 ## 12. Push Project to GitHub
 
 ```bash
-git init
 git add .
 git commit -m "Kubernetes Nginx Deployment and Service"
 git branch -M main
 git remote add origin <your-repo-url>
 git push -u origin main
 ```
-
-![github](img/push-to-git.png)
 
 ---
 
@@ -200,3 +151,12 @@ my-nginx-yaml/
 │   └── push-to-git.png
 └── README.md
 ```
+## Challenges Faced and Resolution
+While attempting to run minikube service, the command failed because the Dockerfile was missing from the project directory.
+To resolve this, I created a Dockerfile inside the nginx-project folder, built the image from it, and then pushed the image to Docker Hub.
+After updating the Kubernetes deployment to use this image, minikube service executed successfully.
+
+## Conclusion
+This project demonstrated how to deploy and expose an application using Kubernetes Pods in Minikube.
+A key takeaway was ensuring that all necessary build files, such as the Dockerfile, are present before attempting deployment. This not only ensures smooth execution but also prevents unnecessary troubleshooting during the deployment process.
+
