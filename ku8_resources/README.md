@@ -113,7 +113,7 @@ minikube service my-nginx-service
 
 This opens the Nginx welcome page in a browser.
 
-![github](img/nginx-browser.png)
+![github](img/browser.png)
 
 ---
 
